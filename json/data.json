@@ -1,0 +1,64 @@
+{
+  "posts": [
+    {
+      "id": 0,
+      "title": "New apartment in the centre",
+      "image": "/images/4.jpg",
+      "city": "Tashkent",
+      "district": "Mirzo-Ulugbek",
+      "street": "Istiqlol",
+      "rooms": 3,
+      "floor": 4,
+      "furniture": true,
+      "appliances": true,
+      "total_area": 70,
+      "living_area": 64,
+      "price": 145000
+    },
+    {
+      "id": 1,
+      "title": "Old apartment",
+      "image": "/images/1.jpg",
+      "city": "Tashkent",
+      "district": "Mirzo-Ulugbek",
+      "street": "Amir Temur",
+      "rooms": 2,
+      "floor": 1,
+      "furniture": false,
+      "appliances": false,
+      "total_area": 50,
+      "living_area": 38,
+      "price": 43000
+    },
+    {
+      "id": 2,
+      "title": "New apartment in Chilonzor",
+      "image": "/images/2.jpg",
+      "city": "Tashkent",
+      "district": "Chilonzor",
+      "street": "Shota Rustavely",
+      "rooms": 3,
+      "floor": 3,
+      "furniture": true,
+      "appliances": false,
+      "total_area": 76,
+      "living_area": 64,
+      "price": 170000
+    },
+    {
+      "id": 3,
+      "title": "Apartment with euroremont",
+      "image": "/images/3.jpg",
+      "city": "Tashkent",
+      "district": "Bektemir",
+      "street": "Gozal",
+      "rooms": 4,
+      "floor": 3,
+      "furniture": true,
+      "appliances": true,
+      "total_area": 80,
+      "living_area": 74,
+      "price": 265000
+    }
+  ]
+}
