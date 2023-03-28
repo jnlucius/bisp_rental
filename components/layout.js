@@ -4,14 +4,71 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Header from "./header";
+import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Layout({ children }) {
+  const router = useRouter();
+  const isActive = (pathname) => router.pathname === pathname;
+
+  const { data: session, status } = useSession();
+
+  let right = null;
+
+  if (status === "loading") {
+    right = (
+      <div className="right">
+        <p>Validating session ...</p>
+        <style jsx>{`
+          .right {
+            margin-left: auto;
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  if (!session) {
+    right = (
+      <>
+        <Nav.Link as={Link} href="/login">
+          Login
+        </Nav.Link>
+        <Nav.Link
+          as={Link}
+          href="/api/auth/signin"
+          data-active={isActive("/signup")}
+        >
+          Log in
+        </Nav.Link>
+      </>
+    );
+  }
+
+  if (session) {
+    right = (
+      <>
+        <Nav.Link as={Link} href="/user" className="text-muted">
+          {session.user.name}
+        </Nav.Link>
+        <Nav.Link as={Link} href="/create">
+          <button>New post</button>
+        </Nav.Link>
+        <Nav.Link>
+          <button onClick={() => signOut()}>
+            <a>Log out</a>
+          </button>
+        </Nav.Link>
+      </>
+    );
+  }
+
   return (
     <main>
       <Navbar bg="dark" variant="dark" expand="md">
         <Container>
           <Navbar.Brand as={Link} href="/">
-            Rent
+            Rentals
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -35,6 +92,7 @@ export default function Layout({ children }) {
                   Separated link
                 </NavDropdown.Item>
               </NavDropdown>
+              {right}
             </Nav>
           </Navbar.Collapse>
         </Container>
