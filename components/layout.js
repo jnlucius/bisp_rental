@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Header from "./header";
 
 export default function Layout({ children }) {
   return (
@@ -38,6 +39,7 @@ export default function Layout({ children }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <Header />
       <Container>{children}</Container>
     </main>
   );
