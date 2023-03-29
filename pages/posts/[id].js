@@ -4,6 +4,8 @@ import { Col } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Image from "next/image";
 import prisma from "../../lib/prisma";
+import { useSession } from "next-auth/react";
+import Router from "next/router";
 
 /*export async function getStaticPaths() {
   const paths = getAllPostIds();
@@ -19,6 +21,11 @@ export async function getServerSideProps({ params }) {
     where: {
       id: String(params?.id),
     },
+    include: {
+      author: {
+        select: { name: true, email: true },
+      },
+    },
   });
   return {
     props: {
@@ -27,7 +34,32 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-export default function PostDetails({ postData }) {
+async function publishPost(id) {
+  await fetch(`/api/publish/${id}`, {
+    method: "PUT",
+  });
+  await Router.push("/");
+}
+
+async function deletePost(id) {
+  await fetch(`/api/post/${id}`, {
+    method: "DELETE",
+  });
+  Router.push("/");
+}
+
+export default function PostDetails(props) {
+  const postData = props.postData;
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <div>Authenticating ...</div>;
+  }
+  const userHasValidSession = Boolean(session);
+  const postBelongsToUser = session?.user?.email === postData.author?.email;
+  let title = postData.title;
+  if (!postData.published) {
+    title = `${title} (Draft)`;
+  }
   return (
     <Layout>
       <Row className="mt-5">
@@ -42,7 +74,8 @@ export default function PostDetails({ postData }) {
       </Row>
       <Row>
         <Col>
-          <h2 className="mt-5">{postData.title}</h2>
+          <h2 className="mt-5">{title}</h2>
+          <p>By {postData?.author?.name || "Unknown author"}</p>
           <p className="mb-0">
             <span className="fw-bold">Price:</span> {postData.price}
           </p>
@@ -83,6 +116,12 @@ export default function PostDetails({ postData }) {
       </Row>
 
       <br />
+      {!postData.published && userHasValidSession && postBelongsToUser && (
+        <button onClick={() => publishPost(postData.id)}>Publish</button>
+      )}
+      {userHasValidSession && postBelongsToUser && (
+        <button onClick={() => deletePost(postData.id)}>Delete</button>
+      )}
     </Layout>
   );
 }

@@ -15,9 +15,14 @@ const inter = Inter({ subsets: ["latin"] });
 //let prisma = new PrismaClient();
 export async function getStaticProps() {
   //const postData = getPosts();
-  const postData = await prisma.post.findMany();
+  const postData = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+  });
   return {
     props: { postData },
+    revalidate: 10,
   };
 }
 
