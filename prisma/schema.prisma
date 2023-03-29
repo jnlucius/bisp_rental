@@ -13,7 +13,7 @@ datasource db {
 model Post {
   id  String   @default(cuid()) @id
   title String 
-  image String
+  image String?
   city  String @default("Tashkent")
   district  String
   street  String
