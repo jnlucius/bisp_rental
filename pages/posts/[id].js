@@ -6,6 +6,7 @@ import Image from "next/image";
 import prisma from "../../lib/prisma";
 import { useSession } from "next-auth/react";
 import Router from "next/router";
+import Link from "next/link";
 
 /*export async function getStaticPaths() {
   const paths = getAllPostIds();
@@ -121,6 +122,14 @@ export default function PostDetails(props) {
       )}
       {userHasValidSession && postBelongsToUser && (
         <button onClick={() => deletePost(postData.id)}>Delete</button>
+      )}
+      {userHasValidSession && postBelongsToUser && (
+        <Link
+          className="border py-2 px-4 m-5 bg-primary text-white"
+          href={`/edit/${postData.id}`}
+        >
+          Edit
+        </Link>
       )}
     </Layout>
   );

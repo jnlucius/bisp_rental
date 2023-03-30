@@ -1,22 +1,47 @@
-// pages/create.tsx
-
 import React, { useState } from "react";
-import Layout from "../components/layout";
+import Layout from "@/components/layout";
+import prisma from "../../lib/prisma";
+import { useSession } from "next-auth/react";
 import Router from "next/router";
 
-const Draft = () => {
-  const [title, setTitle] = useState("");
-  const [city, setCity] = useState("");
-  const [district, setDistrict] = useState("");
-  const [street, setStreet] = useState("");
-  const [rooms, setRooms] = useState();
-  const [floor, setFloor] = useState();
-  const [furniture, setFurniture] = useState(false);
-  const [appliances, setAppliances] = useState(false);
-  const [total_area, setTotal_area] = useState();
-  const [living_area, setLiving_area] = useState();
-  const [price, setPrice] = useState();
-  const [for_sale, setFor_sale] = useState(false);
+export async function getServerSideProps({ params }) {
+  const postData = await prisma.post.findUnique({
+    where: {
+      id: String(params?.id),
+    },
+    include: {
+      author: {
+        select: { name: true, email: true },
+      },
+    },
+  });
+  return {
+    props: {
+      postData,
+    },
+  };
+}
+
+export default function Edit(props) {
+  const postData = props.postData;
+  const [title, setTitle] = useState(postData.title);
+  const [city, setCity] = useState(postData.city);
+  const [district, setDistrict] = useState(postData.district);
+  const [street, setStreet] = useState(postData.street);
+  const [rooms, setRooms] = useState(postData.rooms);
+  const [floor, setFloor] = useState(postData.floor);
+  const [furniture, setFurniture] = useState(postData.furniture);
+  const [appliances, setAppliances] = useState(postData.appliances);
+  const [total_area, setTotal_area] = useState(postData.total_area);
+  const [living_area, setLiving_area] = useState(postData.living_area);
+  const [price, setPrice] = useState(postData.price);
+  const [for_sale, setFor_sale] = useState(postData.for_sale);
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <div>Authenticating ...</div>;
+  }
+  const userHasValidSession = Boolean(session);
+  const postBelongsToUser = session?.user?.email === postData.author?.email;
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -35,8 +60,8 @@ const Draft = () => {
         price,
         for_sale,
       };
-      await fetch("/api/post", {
-        method: "POST",
+      await fetch(`/api/edit/${postData.id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -45,12 +70,14 @@ const Draft = () => {
       console.error(error);
     }
   };
-
+  /*if (!postData.published) {
+    title = `${title} (Draft)`;
+  }*/
   return (
     <Layout>
       <div>
         <form onSubmit={submitData}>
-          <h1>New Draft</h1>
+          <h1>Editing post</h1>
           <input
             autoFocus
             onChange={(e) => setTitle(e.target.value)}
@@ -130,45 +157,15 @@ const Draft = () => {
               onChange={(e) => setFor_sale(!for_sale)}
               placeholder="For sale"
               type="checkbox"
-              value={for_sale}
+              defaultChecked={for_sale}
             />
           </label>
-          <input disabled={!price || !title} type="submit" value="Create" />
+          <input type="submit" value="Edit" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel
           </a>
         </form>
       </div>
-      <style jsx>{`
-        .page {
-          background: var(--geist-background);
-          padding: 3rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        input[type="text"],
-        textarea {
-          width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="submit"] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-
-        .back {
-          margin-left: 1rem;
-        }
-      `}</style>
     </Layout>
   );
-};
-
-export default Draft;
+}
