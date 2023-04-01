@@ -6,14 +6,16 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Header from "./header";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
+import { Row, Col } from "react-bootstrap";
 
-export default function Layout({ children }) {
+export default function Layout({ children, home }) {
   const router = useRouter();
   const isActive = (pathname) => router.pathname === pathname;
 
   const { data: session, status } = useSession();
 
-  let right = null;
+  let right,
+    heading = null;
 
   if (status === "loading") {
     right = (
@@ -61,6 +63,23 @@ export default function Layout({ children }) {
         </Nav.Link>
       </>
     );
+    heading = (
+      <Container className="mt-3">
+        <Row>
+          <Col>
+            <h3>Welcome, {session.user.name}</h3>
+          </Col>
+          <Col className="d-flex justify-content-end">
+            <Link href={"/create"}>
+              <h4 className="btn btn-primary">New Post</h4>
+            </Link>
+            <Link href={"/drafts"}>
+              <h4 className="btn btn-primary ms-2">Drafts</h4>
+            </Link>
+          </Col>
+        </Row>
+      </Container>
+    );
   }
 
   return (
@@ -97,7 +116,7 @@ export default function Layout({ children }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Header />
+      {home && <>{heading}</>}
       <Container>{children}</Container>
     </main>
   );

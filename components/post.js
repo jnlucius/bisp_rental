@@ -22,7 +22,7 @@ import util from "../styles/util.module.css";
 export default function Post({ db }) {
   let data = db;
   return (
-    <Container className={`border rounded ${util.hover_change}`}>
+    <Container className={`border border-2 rounded ${util.hover_change}`}>
       <Row className="h-auto py-0">
         <Col lg={2} sm={3} className="px-0">
           <Image
@@ -47,7 +47,7 @@ export default function Post({ db }) {
             </Col>
           </Row>
           <Row>
-            <Col xs="auto" className="mt-0 border-end">
+            <Col xs="auto" className="mt-0 border-end border-2">
               <p className="mb-0 me-0">
                 <span className="fw-bold">Floor:</span> {data.floor}
               </p>
@@ -55,7 +55,7 @@ export default function Post({ db }) {
                 <span className="fw-bold">Rooms:</span> {data.rooms}
               </p>
             </Col>
-            <Col xs="auto" className="mt-0 border-end">
+            <Col xs="auto" className="mt-0 border-end border-2">
               <p className="mb-0 me-0">
                 <span className="fw-bold">Furniture:</span>{" "}
                 {data.furniture ? "Yes" : "No"}
@@ -65,7 +65,7 @@ export default function Post({ db }) {
                 {data.appliances ? "Yes" : "No"}
               </p>
             </Col>
-            <Col xs="auto" className="mt-0 border-end">
+            <Col xs="auto" className="mt-0 border-end border-2">
               <p className="mb-0 me-0">
                 <span className="fw-bold">Total area:</span> {data.total_area}
               </p>

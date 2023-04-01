@@ -118,16 +118,23 @@ export default function PostDetails(props) {
 
       <br />
       {!postData.published && userHasValidSession && postBelongsToUser && (
-        <button onClick={() => publishPost(postData.id)}>Publish</button>
-      )}
-      {userHasValidSession && postBelongsToUser && (
-        <button onClick={() => deletePost(postData.id)}>Delete</button>
-      )}
-      {userHasValidSession && postBelongsToUser && (
-        <Link
-          className="border py-2 px-4 m-5 bg-primary text-white"
-          href={`/edit/${postData.id}`}
+        <button
+          className="btn btn-primary me-2"
+          onClick={() => publishPost(postData.id)}
         >
+          Publish
+        </button>
+      )}
+      {userHasValidSession && postBelongsToUser && (
+        <button
+          className="btn btn-primary me-2"
+          onClick={() => deletePost(postData.id)}
+        >
+          Delete
+        </button>
+      )}
+      {userHasValidSession && postBelongsToUser && (
+        <Link className="btn btn-primary px-3" href={`/edit/${postData.id}`}>
           Edit
         </Link>
       )}
