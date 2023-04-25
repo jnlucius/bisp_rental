@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { PrismaClient } from "@prisma/client";
 import prisma from "../lib/prisma";
+import dynamic from "next/dynamic";
+import { Container } from "react-bootstrap";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,6 +60,9 @@ export default function Home({ postData }) {
 
   const filteredPosts = appliancesFilter(furnitureFilter(searchFilter(posts)));*/
 
+  const MapWithNoSSR = dynamic(() => import("../components/Map"), {
+    ssr: false,
+  });
   return (
     <Layout home>
       <Head>
@@ -82,6 +87,10 @@ export default function Home({ postData }) {
         </label>
         <input type="checkbox" value={appliances} onChange={handleAppliances} />
   </div>*/}
+      <h3>Map View</h3>
+
+      <MapWithNoSSR text={"test text"} />
+
       <h3>Recent posts:</h3>
       {postData.map((post) => (
         <Link key={post.id} href={`/posts/${post.id}`}>
