@@ -18,6 +18,7 @@ export default async function handle(req, res) {
     living_area,
     price,
     for_sale,
+    publicUrl,
   } = req.body;
 
   const session = await getSession({ req });
@@ -35,6 +36,7 @@ export default async function handle(req, res) {
       living_area: parseFloat(living_area),
       price: parseFloat(price),
       for_sale: for_sale,
+      image: publicUrl,
       author: { connect: { email: session?.user?.email } },
     },
   });

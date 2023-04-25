@@ -66,7 +66,7 @@ export default function PostDetails(props) {
       <Row className="mt-5">
         <Col>
           <Image
-            src="/images/1.jpg"
+            src={postData.image}
             width={500}
             height={400}
             className="w-100 h-100 rounded"

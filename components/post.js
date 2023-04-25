@@ -26,7 +26,7 @@ export default function Post({ db }) {
       <Row className="h-auto py-0">
         <Col lg={2} sm={3} className="px-0">
           <Image
-            src="/images/1.jpg"
+            src={data.image}
             width={500}
             height={400}
             className="w-100 h-100 rounded"

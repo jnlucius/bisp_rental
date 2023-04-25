@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Layout from "../components/layout";
 import Router from "next/router";
 import { Row, Col } from "react-bootstrap";
+import { v4 as uuidv4 } from "uuid";
+import { supabase } from "@/lib/supabase";
 
 const Draft = () => {
   const [title, setTitle] = useState("");
@@ -18,9 +20,27 @@ const Draft = () => {
   const [living_area, setLiving_area] = useState();
   const [price, setPrice] = useState();
   const [for_sale, setFor_sale] = useState(false);
+  const [file, setFile] = useState([]);
 
   const submitData = async (e) => {
     e.preventDefault();
+    const fileName = `${uuidv4()}-${file.name}`;
+
+    const { data, error } = await supabase.storage
+      .from("bisp_images")
+      .upload(fileName, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    const filepath = data.path;
+
+    const res = supabase.storage
+      .from("bisp_images")
+      .getPublicUrl(`${filepath}`);
+
+    const publicUrl = res.data.publicUrl;
+
     try {
       const body = {
         title,
@@ -35,6 +55,7 @@ const Draft = () => {
         living_area,
         price,
         for_sale,
+        publicUrl,
       };
       await fetch("/api/post", {
         method: "POST",
@@ -235,6 +256,18 @@ const Draft = () => {
             <label class="form-check-label" for="saleProp">
               Want to sale the property?
             </label>
+          </div>
+
+          <div className="mb-3">
+            <label for="PropertyImage" className="form-label">
+              Property image
+            </label>
+            <input
+              className="form-control"
+              type="file"
+              id="PropertyImage"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
           </div>
 
           <input
