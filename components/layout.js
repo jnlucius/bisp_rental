@@ -33,9 +33,6 @@ export default function Layout({ children, home }) {
   if (!session) {
     right = (
       <>
-        <Nav.Link as={Link} href="/login">
-          Login
-        </Nav.Link>
         <Nav.Link
           as={Link}
           href="/api/auth/signin"
@@ -50,14 +47,12 @@ export default function Layout({ children, home }) {
   if (session) {
     right = (
       <>
-        <Nav.Link as={Link} href="/user" className="text-muted">
+        <Nav.Link as={Link} href="/" className="text-muted">
           {session.user.name}
         </Nav.Link>
-        <Nav.Link as={Link} href="/create">
-          <button>New post</button>
-        </Nav.Link>
-        <Nav.Link>
-          <button onClick={() => signOut()}>
+
+        <Nav.Link style={{ marginRight: "-1em" }} className="pt-0">
+          <button className="btn btn-primary p-1" onClick={() => signOut()}>
             <a>Log out</a>
           </button>
         </Nav.Link>
@@ -86,7 +81,7 @@ export default function Layout({ children, home }) {
     <main>
       <Navbar bg="dark" variant="dark" expand="md">
         <Container>
-          <Navbar.Brand as={Link} href="/">
+          <Navbar.Brand className=" pb-2" as={Link} href="/">
             Rentals
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -95,22 +90,10 @@ export default function Layout({ children, home }) {
               <Nav.Link as={Link} href="/">
                 Home
               </Nav.Link>
-              <Nav.Link as={Link} href="/posts/first-post">
-                Link
+              <Nav.Link as={Link} href={"/drafts"}>
+                Drafts
               </Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
+
               {right}
             </Nav>
           </Navbar.Collapse>

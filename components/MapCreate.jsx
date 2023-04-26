@@ -9,8 +9,8 @@ const Map = ({ pos, marker }) => {
 
   return (
     <MapContainer
-      center={pos}
-      zoom={14}
+      center={[41.3115363894988, 69.27970801384232]}
+      zoom={11}
       scrollWheelZoom={false}
       style={{ height: "30em", width: "100%" }}
     >

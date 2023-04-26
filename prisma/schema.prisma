@@ -18,6 +18,7 @@ model Post {
   district  String
   street  String
   location String?
+  phone String?
   rooms Int
   floor Int
   furniture Boolean

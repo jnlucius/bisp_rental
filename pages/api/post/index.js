@@ -20,6 +20,7 @@ export default async function handle(req, res) {
     for_sale,
     publicUrl,
     location,
+    phone,
   } = req.body;
 
   const session = await getSession({ req });
@@ -30,6 +31,7 @@ export default async function handle(req, res) {
       district: district,
       street: street,
       location: location,
+      phone: phone,
       rooms: parseInt(rooms, 10),
       floor: parseInt(floor, 10),
       furniture: furniture,

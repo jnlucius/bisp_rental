@@ -85,6 +85,9 @@ export default function PostDetails(props) {
             {", "}
             {postData.district}, {postData.street}
           </p>
+          <p className="mb-0">
+            <span className="fw-bold">Contact phone:</span> {postData.phone}
+          </p>
         </Col>
       </Row>
       <Row>

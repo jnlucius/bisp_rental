@@ -52,6 +52,7 @@ const Draft = ({ coordinates }) => {
   const [price, setPrice] = useState();
   const [for_sale, setFor_sale] = useState(false);
   const [file, setFile] = useState([]);
+  const [phone, setPhone] = useState("");
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -89,6 +90,7 @@ const Draft = ({ coordinates }) => {
         for_sale,
         publicUrl,
         location,
+        phone,
       };
       await fetch("/api/post", {
         method: "POST",
@@ -176,6 +178,16 @@ const Draft = ({ coordinates }) => {
             placeholder="Street"
             type="text"
             value={street}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Enter the contact phone:</label>
+          <input
+            className="form-control"
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Phone"
+            type="text"
+            value={phone}
           />
         </div>
         <Row>
