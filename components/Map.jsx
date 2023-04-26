@@ -21,12 +21,13 @@ const Map = ({ data }) => {
       />
       {data.map((post) => (
         <Marker
+          key={post.id}
           position={[post.location.split("/")[0], post.location.split("/")[1]]}
           draggable={true}
           animate={true}
         >
           <Popup>
-            <Link key={post.id} href={`/posts/${post.id}`}>
+            <Link href={`/posts/${post.id}`}>
               <MapPopup db={post} />
             </Link>
           </Popup>
