@@ -3,13 +3,13 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 
-const Map = ({ marker }) => {
+const Map = ({ pos, marker }) => {
   const ACCESS_TOKEN =
     "pk.eyJ1IjoibWFrc2hvdWsiLCJhIjoiY2xnd2I4MnY1MGE3cjNybG5yd3BqMGl2NCJ9.pbTzbUl_Ip_3YttJRb3_-A";
 
   return (
     <MapContainer
-      center={[41.3115363894988, 69.27970801384232]}
+      center={pos}
       zoom={14}
       scrollWheelZoom={false}
       style={{ height: "30em", width: "100%" }}
