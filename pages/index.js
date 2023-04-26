@@ -14,9 +14,7 @@ import { Container } from "react-bootstrap";
 
 const inter = Inter({ subsets: ["latin"] });
 
-//let prisma = new PrismaClient();
 export async function getStaticProps() {
-  //const postData = getPosts();
   const postData = await prisma.post.findMany({
     where: {
       published: true,
@@ -29,11 +27,11 @@ export async function getStaticProps() {
 }
 
 export default function Home({ postData }) {
-  /*const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [furniture, setFurniture] = useState(false);
   const [appliances, setAppliances] = useState(false);
 
-  const posts = postData.posts;
+  const posts = postData;
 
   const searchFilter = (array) => {
     return array.filter((el) => el.title.toLowerCase().includes(query));
@@ -58,7 +56,7 @@ export default function Home({ postData }) {
     setAppliances(!appliances);
   };
 
-  const filteredPosts = appliancesFilter(furnitureFilter(searchFilter(posts)));*/
+  const filteredPosts = appliancesFilter(furnitureFilter(searchFilter(posts)));
 
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
@@ -72,27 +70,46 @@ export default function Home({ postData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/*<div className="w-11/12 m-auto mt-40 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 md:gap-0">
-        <input onChange={handleChange} type="text" placeholder="Search..." />
+      <div className="mb-3">
+        <input
+          className="form-control"
+          onChange={handleChange}
+          type="text"
+          placeholder="Search..."
+        />
       </div>
-      <div>
-        <label>
-          <span className="fw-bold me-1">Furniture:</span>{" "}
+      <div className="form-check">
+        <input
+          onChange={(e) => setFurniture(!furniture)}
+          className="form-check-input"
+          type="checkbox"
+          defaultChecked={furniture}
+          id="furnCheck"
+        />
+        <label class="form-check-label" for="furnCheck">
+          Furniture
         </label>
-        <input type="checkbox" value={furniture} onChange={handleFurniture} />
       </div>
-      <div>
-        <label>
-          <span className="fw-bold me-1">Appliances:</span>{" "}
+      <div className="form-check">
+        <input
+          onChange={(e) => setAppliances(!appliances)}
+          className="form-check-input"
+          placeholder="Appliances"
+          type="checkbox"
+          defaultChecked={appliances}
+          id="aplCheck"
+        />
+        <label class="form-check-label" for="aplCheck">
+          Appliances
         </label>
-        <input type="checkbox" value={appliances} onChange={handleAppliances} />
-  </div>*/}
+      </div>
+
       <h3>Map View</h3>
 
-      <MapWithNoSSR data={postData} />
+      <MapWithNoSSR data={filteredPosts} />
 
       <h3>Recent posts:</h3>
-      {postData.map((post) => (
+      {filteredPosts.map((post) => (
         <Link key={post.id} href={`/posts/${post.id}`}>
           <Post db={post} />
         </Link>
