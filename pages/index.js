@@ -89,7 +89,7 @@ export default function Home({ postData }) {
   </div>*/}
       <h3>Map View</h3>
 
-      <MapWithNoSSR text={"test text"} />
+      <MapWithNoSSR data={postData} />
 
       <h3>Recent posts:</h3>
       {postData.map((post) => (

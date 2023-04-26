@@ -6,6 +6,8 @@ import Router from "next/router";
 import { Row, Col } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "@/lib/supabase";
+import dynamic from "next/dynamic";
+import { Marker, useMapEvents } from "react-leaflet";
 
 const Draft = () => {
   const [title, setTitle] = useState("");
@@ -21,6 +23,23 @@ const Draft = () => {
   const [price, setPrice] = useState();
   const [for_sale, setFor_sale] = useState(false);
   const [file, setFile] = useState([]);
+  const [coordinates, setCoordinates] = useState([0, 0]);
+
+  const MapWithNoSSR = dynamic(() => import("../components/MapCreate"), {
+    ssr: false,
+  });
+
+  const Markers = () => {
+    const map = useMapEvents({
+      click(e) {
+        setCoordinates([e.latlng.lat, e.latlng.lng]);
+      },
+    });
+
+    return coordinates ? (
+      <Marker position={coordinates} interactive={false} />
+    ) : null;
+  };
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -42,6 +61,7 @@ const Draft = () => {
     const publicUrl = res.data.publicUrl;
 
     try {
+      const location = `${coordinates[0]}/${coordinates[1]}`;
       const body = {
         title,
         city,
@@ -56,6 +76,7 @@ const Draft = () => {
         price,
         for_sale,
         publicUrl,
+        location,
       };
       await fetch("/api/post", {
         method: "POST",
@@ -71,8 +92,13 @@ const Draft = () => {
   return (
     <Layout>
       <div>
-        <form onSubmit={submitData}>
-          <h1>New Draft</h1>
+        <h1>New Draft</h1>
+        <h3>Enter the location</h3>
+        <MapWithNoSSR marker={<Markers />} />
+        <form
+          //style={{ position: "fixed", top: "32em", overflow: "scroll" }}
+          onSubmit={submitData}
+        >
           <div className="my-3">
             <label className="form-label">Enter the title:</label>
             <input

@@ -17,6 +17,7 @@ model Post {
   city  String @default("Tashkent")
   district  String
   street  String
+  location String?
   rooms Int
   floor Int
   furniture Boolean
