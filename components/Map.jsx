@@ -2,6 +2,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
+import MapPopup from "../components/MapPopup";
+import Link from "next/link";
 
 const Map = ({ data }) => {
   const ACCESS_TOKEN =
@@ -23,7 +25,11 @@ const Map = ({ data }) => {
           draggable={true}
           animate={true}
         >
-          <Popup>{post.title}</Popup>
+          <Popup>
+            <Link key={post.id} href={`/posts/${post.id}`}>
+              <MapPopup db={post} />
+            </Link>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>
